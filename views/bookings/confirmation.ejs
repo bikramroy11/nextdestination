@@ -1,0 +1,64 @@
+<%- layout('/layouts/boilerplate') %>
+
+<div class="col-6 offset-3 mt-5 mb-5">
+    <div class="card shadow-sm border-success">
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0">Booking Confirmed!</h4>
+        </div>
+        <div class="card-body p-5 mb-4">
+            <h5 class="card-title">Invoice Details</h5>
+            <table class="table table-borderless">
+                <tbody>
+                    <tr>
+                        <th scope="row">Property</th>
+                        <td><%= booking.listing ? booking.listing.title : "N/A" %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Check-In</th>
+                        <td><%= booking.checkIn ? booking.checkIn.toDateString() : "N/A" %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Check-Out</th>
+                        <td><%= booking.checkOut ? booking.checkOut.toDateString() : "N/A" %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Guests</th>
+                        <td><%= booking.guests || "N/A" %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Price Per Night (incl. GST)</th>
+                        <td>₹<%= booking.pricePerNight ? booking.pricePerNight.toLocaleString("en-IN") : "N/A" %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Number of Nights</th>
+                        <td><%= booking.nights || "N/A" %></td>
+                    </tr>
+                    <tr class="fw-bold">
+                        <th scope="row">Total Paid</th>
+                        <td>₹<%= booking.totalPrice ? booking.totalPrice.toLocaleString("en-IN") : "N/A" %></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="text-muted"><small>Thank you for booking with us!</small></p>
+            <div class="mt-4 d-flex gap-2">
+                <a href="/listings/<%= booking.listing ? booking.listing._id : '#' %>" class="btn btn-primary">Back to Listing</a>
+                <a href="/listings" class="btn btn-secondary">Home</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card-header {
+        font-size: 1.3rem;
+        letter-spacing: 0.5px;
+    }
+    .table td, .table th {
+        padding: 0.5rem 1rem;
+        vertical-align: middle;
+    }
+    .fw-bold th, .fw-bold td {
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+</style>

@@ -1,0 +1,34 @@
+<% layout("/layouts/boilerplate")  %>
+
+
+<div class="row mt-3">
+    <div class="col-8 offset-2">
+        <h1 class="mb-3">Login to get Access</h1><hr>
+        <form action="/login" method="post" class="needs-validation" novalidate>
+            <input type="hidden" name="redirect" value="<%= currentUrl %>">
+            
+            <div class="mb-3">
+                <label for="username" class="form-label mt-3">Username</label>
+                <input type="text" name="username" placeholder="bikram roy" class="form-control" required>
+                <div class="valid-feedback">Looks good!</div>
+                <div class="invalid-feedback">Please Choose A username</div>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label mt-3 ">Password</label>
+                <input type="password" name="password" placeholder="password" class="form-control" required>
+                <div class="valid-feedback">Looks good!</div>
+                <div class="invalid-feedback">Please Choose A password</div>
+            </div>
+            <button class="btn btn-primary mt-3">Login</button>
+        </form>
+
+        <hr>
+        <div class="border border-warning w-100 p-3 mt-3 rounded-pill text-center">
+            <form action="/signup" >
+                <h5>Not a Register User!!!  Click here <button class="btn btn-md btn-dark rounded-end-circle">SignUp</button></h5>
+            </form>
+        </div>
+        
+    </div>
+</div>  
+            

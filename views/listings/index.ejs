@@ -1,0 +1,225 @@
+<% layout("./layouts/boilerplate") -%>
+
+<style>
+  #filters {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 1rem 0 3rem 0 !important;
+    padding-top: 1rem;
+    flex-wrap: wrap;
+    align-items: center;                /* allow wrapping on medium screens */
+  }
+
+  /* individual filter links */
+  .filter a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: rgba(85,85,85,0.7);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    opacity: 0.75;
+    white-space: nowrap;            /* keep icon+text together */
+  }
+
+  /* icon */
+  .filter a i {
+    font-size: 1.4rem;
+    margin-bottom: 0.2rem;
+  }
+
+  /* hover effect */
+  .filter a:hover {
+    color: #ff385c;
+    opacity: 1;
+    transform: scale(1.05);
+    cursor: pointer;
+  }
+
+  /* active state */
+  .filter a.active {
+    color: #ff385c;
+    font-weight: bold;
+    border-bottom: 2px solid #ff385c;
+    opacity: 1;
+  }
+
+  .tax-info{
+    display: none;
+  }
+
+  .tax-toggle {
+      border: 1px solid black;
+      border-radius: 1rem;
+      height: 3rem; /* increase height to fit larger switch */
+      padding: 0.5rem 1rem; /* horizontal padding */
+      display: flex;
+      align-items: center;
+      gap: 1rem; /* space between switch and label */
+      margin-left: 5rem;
+  }
+
+  /* Make the switch bigger */
+  .tax-toggle .form-check-input {
+      width: 2rem;      /* toggle width */
+      height: 1.3rem;   /* toggle height */
+      transform: scale(1.2);
+  }
+
+  /* Label styling */
+  .tax-toggle .form-check-label {
+      font-size: 1rem;
+      font-weight: 500;
+      white-space: nowrap; /* prevent text wrapping */
+}
+
+
+  /* -------- RESPONSIVE BEHAVIOR -------- */
+  @media (max-width: 768px) {
+    #filters {
+      justify-content: flex-start;     /* align left */
+      overflow-x: auto;                /* scroll horizontally */
+      gap: 1rem;
+      padding-bottom: 0.5rem;
+    }
+
+    #filters::-webkit-scrollbar {
+      display: none;                   /* hide scrollbar for mobile */
+    }
+
+    .filter a {
+      font-size: 0.8rem;               /* slightly smaller */
+    }
+
+    .filter a i {
+      font-size: 1.2rem;
+    }
+
+  }
+
+
+</style>
+
+
+
+<div id="filters">
+  <!-- All -->
+  <div class="filter">
+    <a href="/listings?category=All" class="<%= activeCategory==='All' ? 'active' : '' %>" style="text-decoration: none; color: inherit;">
+      <div><i class="fa-solid fa-globe"></i></div>
+      <p>All</p>
+    </a>
+  </div>
+
+  <!-- Trending -->
+  <div class="filter">
+    <a href="/listings?category=Trending" class="<%= activeCategory==='Trending' ? 'active' : '' %>" style="text-decoration: none; color: inherit;">
+      <div><i class="fa-solid fa-fire"></i></div>
+      <p>Trending</p>
+    </a>
+  </div>
+
+  <!-- Rooms -->
+  <div class="filter">
+    <a href="/listings?category=Rooms" class="<%= activeCategory==='Rooms' ? 'active' : '' %>" style="text-decoration: none; color: inherit;">
+      <div><i class="fa-solid fa-bed"></i></div>
+      <p>Rooms</p>
+    </a>
+  </div>
+
+  <!-- Iconic Cities -->
+  <div class="filter">
+    <a href="/listings?category=Iconic Cities" class="<%= activeCategory==='Iconic Cities' ? 'active' : '' %>" style="text-decoration: none; color: inherit;">
+      <div><i class="fa-solid fa-city"></i></div>
+      <p>Iconic Cities</p>
+    </a>
+  </div>
+
+  <!-- Mountains -->
+  <div class="filter">
+    <a href="/listings?category=Mountains" class="<%= activeCategory==='Mountains' ? 'active' : '' %>" style="text-decoration: none; color: inherit;">
+      <div><i class="fa-solid fa-mountain"></i></div>
+      <p>Mountains</p>
+    </a>
+  </div>
+
+  <!-- Beaches -->
+  <div class="filter">
+    <a href="/listings?category=Beaches" class="<%= activeCategory==='Beaches' ? 'active' : '' %>" style="text-decoration: none; color: inherit;">
+      <div><i class="fa-solid fa-umbrella-beach"></i></div>
+      <p>Beaches</p>
+    </a>
+  </div>
+
+  <!-- Castles -->
+  <div class="filter">
+    <a href="/listings?category=Castles" class="<%= activeCategory==='Castles' ? 'active' : '' %>" style="text-decoration: none; color: inherit;">
+      <div><i class="fa-solid fa-chess-rook"></i></div>
+      <p>Castles</p>
+    </a>
+  </div>
+
+  <!-- Pools -->
+  <div class="filter">
+    <a href="/listings?category=Pools" class="<%= activeCategory==='Pools' ? 'active' : '' %>" style="text-decoration: none; color: inherit;">
+      <div><i class="fa-solid fa-person-swimming"></i></div>
+      <p>Pools</p>
+    </a>
+  </div>
+
+  <div class="tax-toggle">
+    <div class="form-check-reverse form-switch ">
+      <input class="form-check-input ms-3" type="checkbox" role="switch" id="switchCheckDefault">
+      <label class="form-check-label" for="switchCheckDefault">Price Including Taxes</label>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+  <% for (const listing of allListings) { 
+       let taxAmount = Math.round(listing.price * 0.18);  // 18% GST
+       let totalPrice = listing.price + taxAmount;
+  %>
+    <a href="/listings/<%= listing._id %>" style="text-decoration: none;">
+      <div class="card listing-card" style="width: 20rem;">
+        <img src="<%= listing.image.url %>" class="card-img-top" alt="image not available" style="height: 20rem;">
+        <div class="card-img-overlay"><%= listing.location %></div>
+        <div class="card-body">
+          <p class="card-text">
+            <b><%= listing.title %></b> <br>
+
+            <!-- Before tax (default visible) -->
+            <i class="base-price"><b>&#8377;<%= listing.price.toLocaleString("en-IN") %></b> for 1 Night</i>
+
+            <!-- After tax (hidden by default) -->
+            <i class="tax-price" style="display:none;">
+              <b>&#8377;<%= totalPrice.toLocaleString("en-IN") %></b> for 1 Night (<i>incl. &#8377;<%= taxAmount.toLocaleString("en-IN")%> for 18% GST</i>)
+            </i>
+          </p>
+        </div>
+      </div>
+    </a>
+  <% } %>
+</div>
+
+
+
+<script>
+  let taxSwitch = document.getElementById("switchCheckDefault");
+  taxSwitch.addEventListener("click", () => {
+    document.querySelectorAll(".base-price").forEach(p => {
+      p.style.display = (p.style.display === "none") ? "inline" : "none";
+    });
+
+    document.querySelectorAll(".tax-price").forEach(p => {
+      p.style.display = (p.style.display === "none") ? "inline" : "none";
+    });
+  });
+
+</script>
