@@ -1,5 +1,5 @@
 # 🌍 NextDestination  
-**A Full-Stack Travel Booking Platform built using Node.js, Express, MongoDB, and EJS**
+**A Full-Stack Travel Booking Platform built using Node.js, Express, MongoDB, and EJS** 
 
 
 
